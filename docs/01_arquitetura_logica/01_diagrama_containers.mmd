@@ -1,45 +1,54 @@
 %%-----------------------------------------------------------
-%% Diagrama de Containers — POC Soluções EV-Costa
+%% Diagrama de Containers — POC Soluções EV-Costa (compatível com GitHub)
 %%-----------------------------------------------------------
 
-C4Context
-title Diagrama de Containers — POC Soluções EV-Costa
+flowchart TD
+    %% --- Agrupamento principal ---
+    subgraph Cloud["☁️ Soluções EV-Costa Cloud Environment"]
+        
+        subgraph Mobile["📱 Aplicativo Móvel (Android/iOS)"]
+            A["Kotlin / SwiftUI\nInterface do usuário para login, rotas EV, sessões de recarga e pagamentos"]
+        end
 
-Container_Boundary(c0, "Soluções EV-Costa Cloud Environment") {
-    
-    Container(mobileApp, "Aplicativo Móvel (Android/iOS)", "Kotlin / SwiftUI", 
-    "Interface do usuário para login, rotas EV, sessões de recarga e pagamentos.")
+        subgraph Gateway["🌐 API Gateway / Ingress"]
+            B["Kong / NGINX\nPonto de entrada único com autenticação OIDC, TLS e rate-limiting"]
+        end
 
-    Container(apiGateway, "API Gateway / Ingress", "Kong / NGINX", 
-    "Ponto de entrada único com autenticação OIDC, TLS e rate-limiting.")
+        subgraph Services["🧩 Microservices — Spring Boot (Java 21)"]
+            C["🔐 Auth Service\nGerencia autenticação e emissão de tokens JWT via OIDC"]
+            D["👤 User/Profile Service\nGerencia perfis e preferências do usuário"]
+            E["🗺️ Routing Service\nCalcula rotas otimizadas considerando autonomia e pontos de recarga"]
+            F["⚡ Charging Service\nGerencia sessões de recarga e eventos Kafka"]
+            G["💳 Payment Service\nTokeniza e simula pagamentos, integra com gateways mockados"]
+            H["🌍 Integrations Adapter\nAbstrai APIs externas (DSA-X, Shell Recharge, Premmia)"]
+        end
 
-    Container(authService, "Auth Service", "Spring Boot (Java 21)", 
-    "Gerencia autenticação, autorização e emissão de tokens JWT via OIDC.")
-    
-    Container(userService, "User/Profile Service", "Spring Boot", 
-    "Gerencia perfis e preferências do usuário. Armazena dados tokenizados.")
+        subgraph Infra["🧱 Infraestrutura e Observabilidade"]
+            I["🗄️ PostgreSQL\nBanco Relacional de dados transacionais"]
+            J["🧠 Redis\nCache de sessões e dados temporários"]
+            K["🪶 Kafka Broker\nMensageria distribuída para eventos de recarga e faturamento"]
+            L["📊 Stack de Observabilidade\nOpenTelemetry + Prometheus + Grafana + Loki + Jaeger"]
+        end
 
-    Container(routingService, "Routing Service", "Spring Boot", 
-    "Calcula rotas otimizadas considerando autonomia (SoC) e pontos de recarga.")
+    end
 
-    Container(chargingService, "Charging Service", "Spring Boot", 
-    "Gerencia sessões de recarga, status e eventos Kafka.")
+    %% --- Relações REST (azul) ---
+    A -->|REST + HTTPS (OIDC Tokens)| B
+    B -->|Autenticação / Refresh Tokens| C
+    B -->|User Profile| D
+    B -->|Consulta de Rota EV| E
+    B -->|Sessão de Recarga| F
+    B -->|Transação Simulada| G
 
-    Container(paymentService, "Payment Service", "Spring Boot", 
-    "Tokeniza e simula pagamentos. Integra com gateways mockados.")
+    %% --- Relações com bancos e cache ---
+    C -->|Leitura/Escrita| I
+    D -->|Leitura/Escrita| I
+    F -->|Registro de Sessões| I
+    G -->|Leitura/Escrita| I
+    E -->|Cache de POIs e rotas| J
+    B -->|Métricas e Logs| L
 
-    Container(integrationsService, "Integrations Adapter", "Spring Boot / Python", 
-    "Abstrai APIs externas (DSA-X, Shell Recharge, Premmia). Publica eventos no Kafka.")
-
-    ContainerDb(postgres, "PostgreSQL", "Banco Relacional", 
-    "Persistência principal de dados transacionais.")
-
-    ContainerDb(redis, "Redis", "In-memory Cache", 
-    "Cache de sessões, dados temporários e rate-limits.")
-
-    Container(kafka, "Kafka Broker", "Mensageria Distribuída", 
-    "Canal assíncrono para eventos de recarga, faturamento e integração externa.")
-
-    Container(obsStack, "Stack de Observabilidade", "OpenTelemetry + Prometheus + Grafana + Loki + Jaeger", 
-    "Mecanismos de logs, métricas, tracing e alertas padronizados.")
-}
+    %% --- Relações Kafka (verde) ---
+    F -.->|Eventos de Sessão (start/stop/status)| K
+    G -.->|Eventos de Fatura| K
+    H -.->|Eventos de Integração| K
