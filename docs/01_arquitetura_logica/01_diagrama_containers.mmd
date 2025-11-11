@@ -1,54 +1,54 @@
 %%-----------------------------------------------------------
-%% Diagrama de Containers — POC Soluções EV-Costa (compatível com GitHub)
+%% Diagrama de Containers — POC Soluções EV-Costa (versão 100% compatível com GitHub)
 %%-----------------------------------------------------------
 
 flowchart TD
     %% --- Agrupamento principal ---
-    subgraph Cloud["☁️ Soluções EV-Costa Cloud Environment"]
+    subgraph Cloud["Soluções EV-Costa Cloud Environment"]
         
-        subgraph Mobile["📱 Aplicativo Móvel (Android/iOS)"]
+        subgraph Mobile["Aplicativo Móvel (Android/iOS)"]
             A["Kotlin / SwiftUI\nInterface do usuário para login, rotas EV, sessões de recarga e pagamentos"]
         end
 
-        subgraph Gateway["🌐 API Gateway / Ingress"]
-            B["Kong / NGINX\nPonto de entrada único com autenticação OIDC, TLS e rate-limiting"]
+        subgraph Gateway["API Gateway / Ingress"]
+            B["Kong / NGINX\nPonto de entrada único com autenticação OIDC, TLS e rate limiting"]
         end
 
-        subgraph Services["🧩 Microservices — Spring Boot (Java 21)"]
-            C["🔐 Auth Service\nGerencia autenticação e emissão de tokens JWT via OIDC"]
-            D["👤 User/Profile Service\nGerencia perfis e preferências do usuário"]
-            E["🗺️ Routing Service\nCalcula rotas otimizadas considerando autonomia e pontos de recarga"]
-            F["⚡ Charging Service\nGerencia sessões de recarga e eventos Kafka"]
-            G["💳 Payment Service\nTokeniza e simula pagamentos, integra com gateways mockados"]
-            H["🌍 Integrations Adapter\nAbstrai APIs externas (DSA-X, Shell Recharge, Premmia)"]
+        subgraph Services["Microservices — Spring Boot (Java 21)"]
+            C["Auth Service\nGerencia autenticação e emissão de tokens JWT via OIDC"]
+            D["User/Profile Service\nGerencia perfis e preferências do usuário"]
+            E["Routing Service\nCalcula rotas otimizadas considerando autonomia e pontos de recarga"]
+            F["Charging Service\nGerencia sessões de recarga e eventos Kafka"]
+            G["Payment Service\nTokeniza e simula pagamentos, integra com gateways mockados"]
+            H["Integrations Adapter\nAbstrai APIs externas como DSA-X, Shell Recharge e Premmia"]
         end
 
-        subgraph Infra["🧱 Infraestrutura e Observabilidade"]
-            I["🗄️ PostgreSQL\nBanco Relacional de dados transacionais"]
-            J["🧠 Redis\nCache de sessões e dados temporários"]
-            K["🪶 Kafka Broker\nMensageria distribuída para eventos de recarga e faturamento"]
-            L["📊 Stack de Observabilidade\nOpenTelemetry + Prometheus + Grafana + Loki + Jaeger"]
+        subgraph Infra["Infraestrutura e Observabilidade"]
+            I["PostgreSQL\nBanco Relacional de dados transacionais"]
+            J["Redis\nCache de sessões e dados temporários"]
+            K["Kafka Broker\nMensageria distribuída para eventos de recarga e faturamento"]
+            L["Stack de Observabilidade\nOpenTelemetry + Prometheus + Grafana + Loki + Jaeger"]
         end
 
     end
 
-    %% --- Relações REST (azul) ---
-    A -->|REST + HTTPS (OIDC Tokens)| B
-    B -->|Autenticação / Refresh Tokens| C
+    %% --- Relações REST (síncronas) ---
+    A -->|REST HTTPS OIDC Tokens| B
+    B -->|Autenticacao e Refresh Tokens| C
     B -->|User Profile| D
     B -->|Consulta de Rota EV| E
-    B -->|Sessão de Recarga| F
-    B -->|Transação Simulada| G
+    B -->|Sessao de Recarga| F
+    B -->|Transacao Simulada| G
 
     %% --- Relações com bancos e cache ---
-    C -->|Leitura/Escrita| I
-    D -->|Leitura/Escrita| I
-    F -->|Registro de Sessões| I
-    G -->|Leitura/Escrita| I
-    E -->|Cache de POIs e rotas| J
-    B -->|Métricas e Logs| L
+    C -->|Leitura e Escrita| I
+    D -->|Leitura e Escrita| I
+    F -->|Registro de Sessoes| I
+    G -->|Leitura e Escrita| I
+    E -->|Cache de POIs e Rotas| J
+    B -->|Metricas e Logs| L
 
-    %% --- Relações Kafka (verde) ---
-    F -.->|Eventos de Sessão (start/stop/status)| K
+    %% --- Relações Kafka (assíncronas) ---
+    F -.->|Eventos de Sessao start stop status| K
     G -.->|Eventos de Fatura| K
-    H -.->|Eventos de Integração| K
+    H -.->|Eventos de Integracao| K
