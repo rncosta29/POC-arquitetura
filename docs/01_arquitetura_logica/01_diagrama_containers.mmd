@@ -43,24 +43,3 @@ Container_Boundary(c0, "Soluções EV-Costa Cloud Environment") {
     Container(obsStack, "Stack de Observabilidade", "OpenTelemetry + Prometheus + Grafana + Loki + Jaeger", 
     "Mecanismos de logs, métricas, tracing e alertas padronizados.")
 }
-
-Rel(mobileApp, apiGateway, "REST + HTTPS (OIDC Tokens)")
-Rel(apiGateway, authService, "REST (Autenticação / Refresh Tokens)")
-Rel(apiGateway, userService, "REST (User Profile)")
-Rel(apiGateway, routingService, "REST (Consulta de Rota EV)")
-Rel(apiGateway, chargingService, "REST (Sessão de Recarga)")
-Rel(apiGateway, paymentService, "REST (Transação Simulada)")
-
-Rel(chargingService, kafka, "Publica eventos de sessão (start/stop/status)")
-Rel(paymentService, kafka, "Publica eventos de fatura")
-Rel(integrationsService, kafka, "Consome e publica eventos de integrações")
-
-Rel(authService, postgres, "Leitura/Escrita")
-Rel(userService, postgres, "Leitura/Escrita")
-Rel(paymentService, postgres, "Leitura/Escrita")
-Rel(routingService, redis, "Cache de POIs e rotas")
-Rel(chargingService, postgres, "Registro de sessões")
-Rel(apiGateway, obsStack, "Métricas e logs de requisições")
-
-UpdateRelStyle(apiGateway, mobileApp, $textColor="blue", $lineColor="blue")
-UpdateRelStyle(kafka, integrationsService, $textColor="green", $lineColor="green")
