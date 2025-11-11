@@ -1,0 +1,61 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15" version="28.2.9">
+  <diagram id="aws-zones-v3" name="Zonas de Disponibilidade - AWS Official Style">
+    <mxGraphModel dx="1850" dy="1060" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="region" value="AWS Region (sa-east-1)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;fontStyle=1;align=center;verticalAlign=top;spacingTop=10;" parent="1" vertex="1">
+          <mxGeometry x="70" y="29" width="1550" height="950" as="geometry" />
+        </mxCell>
+        <mxCell id="alb" value="AWS Application Load Balancer + WAF" style="shape=mxgraph.aws4.application_load_balancer;fillColor=#FFFFFF;verticalLabelPosition=bottom;verticalAlign=top;align=center;imageBackground=#ffffff;" parent="region" vertex="1">
+          <mxGeometry x="725" y="50" width="120" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="ingress" value="Ingress Layer (API Gateway / TLS / OIDC)" style="rounded=1;fillColor=#E6ECF2;strokeColor=#007DBC;fontStyle=1;align=center;whiteSpace=wrap;fontSize=11;" parent="region" vertex="1">
+          <mxGeometry x="540" y="190" width="550" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="az_a" value="AZ-a" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5FE;strokeColor=#007DBC;fontSize=12;fontStyle=1;align=center;verticalAlign=top;" parent="region" vertex="1">
+          <mxGeometry x="120" y="260" width="370" height="600" as="geometry" />
+        </mxCell>
+        <mxCell id="node_a" value="NodeGroup AZ-a" style="shape=mxgraph.aws4.ec2_instance;fillColor=#FFFFFF;verticalLabelPosition=bottom;verticalAlign=top;align=center;" parent="az_a" vertex="1">
+          <mxGeometry x="135" y="121" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="s3" value="Amazon S3 (Backups e Logs)" style="shape=mxgraph.aws4.s3_bucket;fillColor=#FFFFFF;verticalLabelPosition=bottom;verticalAlign=top;align=center;" parent="az_a" vertex="1">
+          <mxGeometry x="135" y="440" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="az_b" value="AZ-b" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5FE;strokeColor=#007DBC;fontSize=12;fontStyle=1;align=center;verticalAlign=top;" parent="region" vertex="1">
+          <mxGeometry x="600" y="260" width="370" height="600" as="geometry" />
+        </mxCell>
+        <mxCell id="node_b" value="NodeGroup AZ-b" style="shape=mxgraph.aws4.ec2_instance;fillColor=#FFFFFF;verticalLabelPosition=bottom;verticalAlign=top;align=center;" parent="az_b" vertex="1">
+          <mxGeometry x="135" y="121" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rds" value="Amazon RDS (PostgreSQL - Multi-AZ)" style="shape=mxgraph.aws4.rds_instance;fillColor=#FFFFFF;verticalLabelPosition=bottom;verticalAlign=top;align=center;" parent="az_b" vertex="1">
+          <mxGeometry x="60" y="221" width="90" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="redis" value="ElastiCache Redis (replicado)" style="shape=mxgraph.aws4.elasticache;fillColor=#FFFFFF;verticalLabelPosition=bottom;verticalAlign=top;align=center;" parent="az_b" vertex="1">
+          <mxGeometry x="240" y="281" width="90" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="kafka" value="Amazon MSK (Kafka Cluster)" style="shape=mxgraph.aws4.msk_cluster;fillColor=#FFFFFF;verticalLabelPosition=bottom;verticalAlign=top;align=center;" parent="az_b" vertex="1">
+          <mxGeometry x="60" y="411" width="90" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow1" style="endArrow=classic;dashed=1;strokeColor=#2ECC71;" parent="az_b" source="rds" target="redis" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow2" style="endArrow=classic;dashed=1;strokeColor=#2ECC71;" parent="az_b" source="redis" target="kafka" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="az_c" value="AZ-c" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F5FE;strokeColor=#007DBC;fontSize=12;fontStyle=1;align=center;verticalAlign=top;" parent="region" vertex="1">
+          <mxGeometry x="1080" y="260" width="370" height="600" as="geometry" />
+        </mxCell>
+        <mxCell id="node_c" value="NodeGroup AZ-c" style="shape=mxgraph.aws4.ec2_instance;fillColor=#FFFFFF;verticalLabelPosition=bottom;verticalAlign=top;align=center;" parent="az_c" vertex="1">
+          <mxGeometry x="135" y="121" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="obs" value="Prometheus / Grafana / Loki / Jaeger" style="shape=mxgraph.aws4.cloudwatch;fillColor=#FFFFFF;verticalLabelPosition=bottom;verticalAlign=top;align=center;" parent="az_c" vertex="1">
+          <mxGeometry x="135" y="440" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="global_label" value="EKS Cluster distribuído em 3 AZs (Alta Disponibilidade)" style="whiteSpace=wrap;html=1;fontStyle=1;align=center;fontSize=12;strokeColor=none;" parent="region" vertex="1">
+          <mxGeometry x="585" y="890" width="400" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

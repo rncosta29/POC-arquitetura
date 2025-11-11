@@ -1,0 +1,90 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15" version="28.2.9">
+  <diagram id="EV-COSTA-ARCH" name="arquitetura_servicos">
+    <mxGraphModel dx="1850" dy="1060" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1080" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="l3uJdEng7A4roPkib1Ny-25" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#EAF1F8;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="120" y="600" width="1800" height="900" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-26" value="Soluções EV-Costa — Arquitetura de Microsserviços (AWS Official Style)" style="text;html=1;fontSize=22;fontStyle=1;align=center;verticalAlign=top;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="420" y="620" width="1200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-27" value="Frontend — Aplicativos Móveis" style="swimlane;horizontal=1;rounded=1;fillColor=#DCEEFF;strokeColor=#7EA6E0;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="220" y="700" width="1600" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-28" value="App Android (Kotlin)" style="shape=mxgraph.aws4.mobile_client;fillColor=#007ACC;strokeColor=#004C99;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-27">
+          <mxGeometry x="500" y="30" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-29" value="App iOS (SwiftUI)" style="shape=mxgraph.aws4.mobile_client;fillColor=#007ACC;strokeColor=#004C99;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-27">
+          <mxGeometry x="1000" y="30" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-30" value="API Gateway / Ingress" style="swimlane;horizontal=1;rounded=1;fillColor=#FFD6B3;strokeColor=#E08B00;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="220" y="830" width="1600" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-31" value="API Gateway (NGINX / Kong / OIDC / TLS)" style="shape=mxgraph.aws4.api_gateway;fillColor=#F58534;strokeColor=#D46A00;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-30">
+          <mxGeometry x="700" y="30" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-32" value="Microsserviços" style="swimlane;horizontal=1;rounded=1;fillColor=#FFFFFF;strokeColor=#CCCCCC;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="220" y="950" width="1600" height="180" as="geometry">
+            <mxRectangle x="220" y="950" width="130" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-33" value="Auth Service" style="shape=mxgraph.aws4.security_identity_and_compliance;fillColor=#F58534;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-32">
+          <mxGeometry x="150" y="50" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-34" value="User/Profile Service" style="shape=mxgraph.aws4.users;fillColor=#F58534;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-32">
+          <mxGeometry x="350" y="50" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-35" value="Routing Service" style="shape=mxgraph.aws4.analytics;fillColor=#F58534;align=center;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-32">
+          <mxGeometry x="550" y="50" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-36" value="Charging Service" style="shape=mxgraph.aws4.compute;fillColor=#F58534;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-32">
+          <mxGeometry x="750" y="50" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-55" value="Payment Service" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-32">
+          <mxGeometry x="950" y="130" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-80" value="Integration Adapter" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-32">
+          <mxGeometry x="1130" y="130" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-39" value="Infraestrutura" style="swimlane;horizontal=1;rounded=1;fillColor=#F2F2F2;strokeColor=#999999;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="220" y="1150" width="1600" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-40" value="PostgreSQL" style="shape=mxgraph.aws4.database;fillColor=#1E73BE;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-39">
+          <mxGeometry x="460" y="30" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-41" value="Redis" style="shape=mxgraph.aws4.database;fillColor=#CC0000;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-39">
+          <mxGeometry x="840" y="30" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-43" value="Mongo DB" style="shape=mxgraph.aws4.database;fillColor=#1E73BE;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-39">
+          <mxGeometry x="170" y="30" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-81" value="Kafka" style="shape=mxgraph.aws4.database;fillColor=#CC0000;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-39">
+          <mxGeometry x="1120" y="30" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-44" value="Observabilidade e Segurança" style="swimlane;horizontal=1;rounded=1;fillColor=#E0E0E0;strokeColor=#B3B3B3;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="220" y="1290" width="1600" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-45" value="OpenTelemetry Collector" style="shape=mxgraph.aws4.monitoring;fillColor=#7EA6E0;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-44">
+          <mxGeometry x="250" y="40" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-46" value="Prometheus / Grafana" style="shape=mxgraph.aws4.analytics;fillColor=#7EA6E0;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-44">
+          <mxGeometry x="550" y="40" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-47" value="Loki / Jaeger" style="shape=mxgraph.aws4.logs;fillColor=#7EA6E0;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-44">
+          <mxGeometry x="850" y="40" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-48" value="Keycloak / Vault" style="shape=mxgraph.aws4.security_identity_and_compliance;fillColor=#7EA6E0;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="l3uJdEng7A4roPkib1Ny-44">
+          <mxGeometry x="1150" y="40" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-52" value="" style="points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;fillColor=#FF6A00;strokeColor=none;shape=mxgraph.alibaba_cloud.gts_global_transaction_service;" vertex="1" parent="1">
+          <mxGeometry x="1183" y="1005" width="69.13" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="l3uJdEng7A4roPkib1Ny-54" value="" style="points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;fillColor=#FF6A00;strokeColor=none;shape=mxgraph.alibaba_cloud.gts_global_transaction_service;" vertex="1" parent="1">
+          <mxGeometry x="1370" y="1005" width="69.13" height="70" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

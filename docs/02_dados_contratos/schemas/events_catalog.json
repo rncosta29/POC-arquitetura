@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Soluções EV-Costa — Catálogo de Eventos Kafka",
+  "version": "1.0.0",
+  "description": "Catálogo resumido de eventos assíncronos (Kafka) utilizados pelos microsserviços da POC Soluções EV-Costa.",
+  "topics": {
+    "evcosta.charging.session.started": {
+      "origin": "charging-service",
+      "description": "Início de uma sessão de recarga.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "eventId": { "type": "string", "format": "uuid" },
+          "type": { "const": "charging.session.started" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "payload": {
+            "type": "object",
+            "properties": {
+              "sessionId": { "type": "string" },
+              "userId": { "type": "string" },
+              "vehicleId": { "type": "string" },
+              "pointId": { "type": "string" },
+              "startedAt": { "type": "string", "format": "date-time" }
+            },
+            "required": ["sessionId", "userId", "vehicleId", "startedAt"]
+          },
+          "correlationId": { "type": "string" },
+          "source": { "const": "charging-service" }
+        },
+        "required": ["eventId", "type", "timestamp", "payload", "source"]
+      }
+    },
+
+    "evcosta.charging.session.ended": {
+      "origin": "charging-service",
+      "description": "Encerramento da sessão de recarga.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "eventId": { "type": "string", "format": "uuid" },
+          "type": { "const": "charging.session.ended" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "payload": {
+            "type": "object",
+            "properties": {
+              "sessionId": { "type": "string" },
+              "userId": { "type": "string" },
+              "vehicleId": { "type": "string" },
+              "energyKwh": { "type": "number" },
+              "durationMin": { "type": "integer" },
+              "totalValue": { "type": "number" },
+              "currency": { "type": "string", "default": "BRL" },
+              "endedAt": { "type": "string", "format": "date-time" }
+            },
+            "required": ["sessionId", "endedAt", "energyKwh", "totalValue"]
+          },
+          "correlationId": { "type": "string" },
+          "source": { "const": "charging-service" }
+        },
+        "required": ["eventId", "type", "timestamp", "payload", "source"]
+      }
+    },
+
+    "evcosta.payment.authorized": {
+      "origin": "payment-service",
+      "description": "Pagamento autorizado com sucesso.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "eventId": { "type": "string" },
+          "type": { "const": "payment.authorized" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "payload": {
+            "type": "object",
+            "properties": {
+              "paymentTxId": { "type": "string" },
+              "sessionId": { "type": "string" },
+              "amount": { "type": "number" },
+              "currency": { "type": "string" },
+              "authorizedAt": { "type": "string", "format": "date-time" }
+            },
+            "required": ["paymentTxId", "amount", "currency"]
+          },
+          "correlationId": { "type": "string" },
+          "source": { "const": "payment-service" }
+        },
+        "required": ["eventId", "type", "timestamp", "payload", "source"]
+      }
+    },
+
+    "evcosta.payment.captured": {
+      "origin": "payment-service",
+      "description": "Pagamento capturado após conclusão da recarga.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "eventId": { "type": "string" },
+          "type": { "const": "payment.captured" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "payload": {
+            "type": "object",
+            "properties": {
+              "paymentTxId": { "type": "string" },
+              "sessionId": { "type": "string" },
+              "capturedAt": { "type": "string", "format": "date-time" },
+              "amount": { "type": "number" },
+              "currency": { "type": "string" }
+            },
+            "required": ["paymentTxId", "capturedAt", "amount"]
+          },
+          "correlationId": { "type": "string" },
+          "source": { "const": "payment-service" }
+        },
+        "required": ["eventId", "type", "timestamp", "payload", "source"]
+      }
+    },
+
+    "evcosta.payment.failed": {
+      "origin": "payment-service",
+      "description": "Falha no processamento do pagamento.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "eventId": { "type": "string" },
+          "type": { "const": "payment.failed" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "payload": {
+            "type": "object",
+            "properties": {
+              "paymentTxId": { "type": "string" },
+              "sessionId": { "type": "string" },
+              "reason": { "type": "string" },
+              "errorCode": { "type": "string" }
+            },
+            "required": ["paymentTxId", "reason"]
+          },
+          "correlationId": { "type": "string" },
+          "source": { "const": "payment-service" }
+        },
+        "required": ["eventId", "type", "timestamp", "payload", "source"]
+      }
+    },
+
+    "evcosta.integration.station.updated": {
+      "origin": "integration-service",
+      "description": "Atualização de status de ponto de recarga via integração externa.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "eventId": { "type": "string" },
+          "type": { "const": "integration.station.updated" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "payload": {
+            "type": "object",
+            "properties": {
+              "providerId": { "type": "string" },
+              "externalStationId": { "type": "string" },
+              "status": { "type": "string" },
+              "lastSeen": { "type": "string", "format": "date-time" }
+            },
+            "required": ["providerId", "externalStationId", "status"]
+          },
+          "correlationId": { "type": "string" },
+          "source": { "const": "integration-service" }
+        },
+        "required": ["eventId", "type", "timestamp", "payload", "source"]
+      }
+    }
+  }
+}

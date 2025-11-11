@@ -1,0 +1,79 @@
+```mermaid
+%%-----------------------------------------------------------
+%% Diagrama de Containers — POC Soluções EV-Costa
+%%-----------------------------------------------------------
+
+C4Context
+title Diagrama de Containers — POC Soluções EV-Costa
+
+Container_Boundary(c0, "Soluções EV-Costa Cloud Environment") {
+    
+    Container(mobileApp, "Aplicativo Móvel (Android/iOS)", "Kotlin / SwiftUI", 
+    "Interface do usuário para login, rotas EV, sessões de recarga e pagamentos.")
+
+    Container(apiGateway, "API Gateway / Ingress", "Kong / NGINX", 
+    "Ponto de entrada único com autenticação OIDC, TLS e rate-limiting.")
+
+    Container(authService, "Auth Service", "Spring Boot (Java 21)", 
+    "Gerencia autenticação, autorização e emissão de tokens JWT via OIDC.")
+    
+    Container(userService, "User/Profile Service", "Spring Boot", 
+    "Gerencia perfis e preferências do usuário. Armazena dados tokenizados.")
+
+    Container(routingService, "Routing Service", "Spring Boot", 
+    "Calcula rotas otimizadas considerando autonomia (SoC) e pontos de recarga.")
+
+    Container(chargingService, "Charging Service", "Spring Boot", 
+    "Gerencia sessões de recarga, status e eventos Kafka.")
+
+    Container(paymentService, "Payment Service", "Spring Boot", 
+    "Tokeniza e simula pagamentos. Integra com gateways mockados.")
+
+    Container(integrationsService, "Integrations Adapter", "Spring Boot / Python", 
+    "Abstrai APIs externas (DSA-X, Shell Recharge, Premmia). Publica eventos no Kafka.")
+
+    ContainerDb(postgres, "PostgreSQL", "Banco Relacional", 
+    "Persistência principal de dados transacionais.")
+
+    ContainerDb(redis, "Redis", "In-memory Cache", 
+    "Cache de sessões, dados temporários e rate-limits.")
+
+    Container(kafka, "Kafka Broker", "Mensageria Distribuída", 
+    "Canal assíncrono para eventos de recarga, faturamento e integração externa.")
+
+    Container(obsStack, "Stack de Observabilidade", "OpenTelemetry + Prometheus + Grafana + Loki + Jaeger", 
+    "Mecanismos de logs, métricas, tracing e alertas padronizados.")
+}
+
+Rel(mobileApp, apiGateway, "REST + HTTPS (OIDC Tokens)")
+Rel(apiGateway, authService, "REST (Autenticação / Refresh Tokens)")
+Rel(apiGateway, userService, "REST (User Profile)")
+Rel(apiGateway, routingService, "REST (Consulta de Rota EV)")
+Rel(apiGateway, chargingService, "REST (Sessão de Recarga)")
+Rel(apiGateway, paymentService, "REST (Transação Simulada)")
+
+Rel(chargingService, kafka, "Publica eventos de sessão (start/stop/status)")
+Rel(paymentService, kafka, "Publica eventos de fatura")
+Rel(integrationsService, kafka, "Consome e publica eventos de integrações")
+
+Rel(authService, postgres, "Leitura/Escrita")
+Rel(userService, postgres, "Leitura/Escrita")
+Rel(paymentService, postgres, "Leitura/Escrita")
+Rel(routingService, redis, "Cache de POIs e rotas")
+Rel(chargingService, postgres, "Registro de sessões")
+Rel(apiGateway, obsStack, "Métricas e logs de requisições")
+
+UpdateRelStyle(apiGateway, mobileApp, $textColor="blue", $lineColor="blue")
+UpdateRelStyle(kafka, integrationsService, $textColor="green", $lineColor="green")
+
+SHOW_LEGEND()
+
+---
+
+### **Notas Técnicas**
+- O diagrama segue o **modelo C4 – Container Level**, facilitando entendimento por diferentes públicos.  
+- Cada serviço é descrito com seu propósito e principais responsabilidades.  
+- Cores e legendas ajudam a distinguir **fluxos REST (azul)** e **eventos Kafka (verde)**.  
+- Este arquivo pode ser renderizado automaticamente via `Mermaid CLI`, `MkDocs`, `GitLab Wiki` ou `pandoc`.
+
+---
