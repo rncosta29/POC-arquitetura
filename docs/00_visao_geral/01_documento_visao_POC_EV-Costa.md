@@ -62,8 +62,6 @@ A solução será composta por domínios independentes, comunicando-se via REST 
 - **Payment Service:** tokenização e simulação de pagamentos.  
 - **Integrations Service:** abstração de provedores externos (DSA-X, Shell Recharge, etc.).  
 
-*(inserir imagem: diagrama flat de microsserviços e cloud integrations)*
-
 ---
 
 ## **7. Premissas Técnicas**
