@@ -64,15 +64,3 @@ Rel(apiGateway, obsStack, "Métricas e logs de requisições")
 
 UpdateRelStyle(apiGateway, mobileApp, $textColor="blue", $lineColor="blue")
 UpdateRelStyle(kafka, integrationsService, $textColor="green", $lineColor="green")
-
-SHOW_LEGEND()
-
----
-
-### **Notas Técnicas**
-- O diagrama segue o **modelo C4 – Container Level**, facilitando entendimento por diferentes públicos.  
-- Cada serviço é descrito com seu propósito e principais responsabilidades.  
-- Cores e legendas ajudam a distinguir **fluxos REST (azul)** e **eventos Kafka (verde)**.  
-- Este arquivo pode ser renderizado automaticamente via `Mermaid CLI`, `MkDocs`, `GitLab Wiki` ou `pandoc`.
-
----
