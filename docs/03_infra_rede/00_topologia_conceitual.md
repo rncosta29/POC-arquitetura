@@ -7,7 +7,7 @@ A infraestrutura da **Soluções EV-Costa** é implantada em uma **arquitetura d
 A camada de aplicação é orquestrada via **Amazon EKS (Elastic Kubernetes Service)**, com **NodeGroups replicados** em cada zona.  
 A camada de dados utiliza serviços **gerenciados e multi-AZ**, enquanto a observabilidade é tratada de forma independente e resiliente.
 
-O diagrama `zonas_disponibilidade_v3.drawio.xml` representa visualmente esta topologia em estilo AWS oficial.
+O diagrama `zonas_disponibilidade.drawio.xml` representa visualmente esta topologia em estilo AWS oficial.
 
 ---
 

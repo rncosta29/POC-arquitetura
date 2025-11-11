@@ -156,10 +156,12 @@ Estruturas auxiliares ligadas ao planejamento de rotas.
 
 ## 6. Políticas de Segurança (SQL-Level)
 
+```sql
 CREATE POLICY user_isolation_policy ON user
   USING (id = current_setting('app.current_user_id')::uuid);
 
 ALTER TABLE user ENABLE ROW LEVEL SECURITY;
+```
 
 - **Objetivo:** Isolar dados dados por usuário autenticado.
 - **View Minimizada:** Apenas campos não sensiveis expostos via API. 
@@ -186,4 +188,3 @@ ALTER TABLE user ENABLE ROW LEVEL SECURITY;
 
 **Responsável:** Arquiteto de Software — *Soluções EV-Costa*  
 **Revisores:** Engenharia de Dados / Segurança / DevOps
-

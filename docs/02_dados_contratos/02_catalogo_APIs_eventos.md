@@ -81,6 +81,7 @@ Descrever os principais **contratos REST** e **eventos assíncronos (Kafka)** do
 
 ## 4. Estrutura de Mensagem — REST (Exemplo)
 
+```json
 {
   "status": "started",
   "sessionId": "a2e17b6b-fb23-41d8-bef4-122cb9b81b4a",
@@ -90,6 +91,7 @@ Descrever os principais **contratos REST** e **eventos assíncronos (Kafka)** do
   "startedAt": "2025-11-07T13:00:00Z",
   "traceId": "4fb77e31d8a742d3b845e2e80efae44e"
 }
+```
 
 ---
 
@@ -104,7 +106,7 @@ Descrever os principais **contratos REST** e **eventos assíncronos (Kafka)** do
 | `evcosta.payment.failed` | Payment Service | Pagamento rejeitado | `payment_failed.json` |
 | `evcosta.integration.station.updated` | Integration Service | Atualização de status de ponto | `station_updated.json` |
 
-
+```json
 {
   "eventId": "c4f3b2e7-77e3-49f3-90e3-493a7e9e28ce",
   "type": "charging.session.ended",
@@ -122,6 +124,7 @@ Descrever os principais **contratos REST** e **eventos assíncronos (Kafka)** do
   "correlationId": "4fb77e31d8a742d3b845e2e80efae44e",
   "source": "charging-service"
 }
+```
 
 ---
 

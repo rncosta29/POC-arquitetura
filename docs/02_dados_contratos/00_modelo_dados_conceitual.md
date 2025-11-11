@@ -13,6 +13,7 @@ Foco: **PostgreSQL** como banco transacional, **Redis** para cache (sessões/rot
 
 ## 2. Visão Geral (ER Conceitual)
 
+```mermaid
 erDiagram
     USER ||--o{ VEHICLE : "possui"
     USER ||--o{ PAYMENT_METHOD : "cadastra"
@@ -31,6 +32,7 @@ erDiagram
     ROUTE ||--o{ POI : "sugere recarga"
     PROVIDER ||--o{ PROVIDER_ASSET : "estações/external ids"
     PROVIDER_ASSET ||--o{ CHARGING_POINT : "mapeia"
+```
 
 ---
 

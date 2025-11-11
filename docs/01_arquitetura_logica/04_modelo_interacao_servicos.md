@@ -18,6 +18,7 @@ O objetivo é garantir comunicação previsível, observável e segura entre os 
 
 ## **3. Padrão de Integração Síncrona (REST)**
 
+```mermaid
 sequenceDiagram
     participant App as Mobile App
     participant GW as API Gateway
@@ -43,6 +44,7 @@ sequenceDiagram
     PY-->>CH: Confirma simulação
     CH-->>GW: Retorna ID da sessão
     GW-->>App: Sessão iniciada
+```
 
 ---
 

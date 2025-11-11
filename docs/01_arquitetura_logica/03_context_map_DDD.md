@@ -52,6 +52,7 @@ A modelagem segue o **DDD leve**, mantendo a simplicidade necessária para uma P
 
 ## **5. Mapa de Contextos (Diagrama Mermaid)**
 
+```mermaid
 graph TD
   subgraph CORE [Domínio Principal]
     CH[Charging Context]
@@ -82,6 +83,7 @@ graph TD
   class CH,RT core;
   class AU,US support;
   class PA,IN generic;
+```
 
 ## 6. Notas de Design
 
@@ -104,5 +106,3 @@ Arquiteto de Software — *Soluções EV-Costa*
 Engenharia Backend / Domain Experts / Segurança da Informação
 
 ---
-
-Esse documento fecha a visão **DDD dos domínios** da POC.

@@ -1,75 +1,41 @@
-```mermaid
 %%-----------------------------------------------------------
 %% Diagrama de Componentes — Charging Service (POC Soluções EV-Costa)
+%% Compatível com GitHub
 %%-----------------------------------------------------------
 
-C4Component
-title Diagrama de Componentes — Charging Service
+flowchart TD
+    %% --- Contexto principal ---
+    subgraph ChargingService["⚡ Charging Service — Spring Boot (Java 21)"]
+        
+        subgraph ControllerLayer["🎯 Controller Layer"]
+            A["ChargingController\nExpõe endpoints HTTP para criação, consulta e encerramento de sessões de recarga"]
+        end
 
-Container_Boundary(c1, "Charging Service") {
-  
-    Component(controller, "ChargingController", "Spring REST Controller", 
-    "Expõe endpoints HTTP para criação, consulta e encerramento de sessões de recarga.")
-    
-    Component(service, "ChargingSessionService", "Aplicação / Domínio", 
-    "Gerencia o ciclo de vida de uma sessão de recarga, aplicando regras de negócio.")
-    
-    Component(repo, "ChargingSessionRepository", "JPA Repository", 
-    "Persistência de dados das sessões no banco relacional (PostgreSQL).")
-    
-    Component(eventProducer, "ChargingEventProducer", "Kafka Publisher", 
-    "Publica eventos de recarga (start, update, end) no tópico Kafka.")
-    
-    Component(eventConsumer, "ChargingEventConsumer", "Kafka Consumer", 
-    "Recebe eventos externos de confirmação ou status das integrações.")
-    
-    Component(cache, "ChargingCacheManager", "Redis Cache Layer", 
-    "Gerencia dados temporários e estados de sessão em cache.")
-    
-    Component(metrics, "TelemetryAdapter", "OpenTelemetry Exporter", 
-    "Envia métricas, logs e traces para o stack de observabilidade.")
-    
-    Component(authClient, "AuthClient", "HTTP Client", 
-    "Consulta o Auth Service para validar tokens e permissões.")
-    
-    Component(paymentClient, "PaymentClient", "HTTP Client", 
-    "Comunica-se com o Payment Service para validação e simulação de pagamento.")
-}
+        subgraph ServiceLayer["🧠 Application / Domain Layer"]
+            B["ChargingSessionService\nGerencia o ciclo de vida da sessão de recarga e aplica regras de negócio"]
+        end
 
-Rel(controller, service, "Invoca regras de negócio")
-Rel(service, repo, "Persiste dados de sessão")
-Rel(service, eventProducer, "Publica eventos de status")
-Rel(eventConsumer, service, "Atualiza estado com base em eventos externos")
-Rel(service, cache, "Armazena sessões temporárias")
-Rel(service, metrics, "Envia métricas e logs")
-Rel(service, authClient, "Valida credenciais de sessão (OIDC)")
-Rel(service, paymentClient, "Confirma transação de pagamento simulada")
+        subgraph DataLayer["💾 Persistence Layer"]
+            C["ChargingSessionRepository\nJPA Repository responsável pela persistência no PostgreSQL"]
+        end
 
-UpdateRelStyle(service, repo, $textColor="gray", $lineColor="gray")
-UpdateRelStyle(service, eventProducer, $textColor="green", $lineColor="green")
-UpdateRelStyle(service, authClient, $textColor="blue", $lineColor="blue")
-UpdateRelStyle(service, paymentClient, $textColor="blue", $lineColor="blue")
+        subgraph IntegrationLayer["🌍 Integration Layer"]
+            D["ChargingEventProducer\nPublica eventos de recarga no Kafka"]
+            E["ChargingEventConsumer\nRecebe eventos externos e atualiza estado de sessão"]
+            F["ChargingCacheManager\nGerencia dados temporários e cache no Redis"]
+            G["TelemetryAdapter\nExporta métricas, logs e traces para observabilidade"]
+            H["AuthClient\nValida tokens e permissões no Auth Service via HTTP"]
+            I["PaymentClient\nComunica-se com Payment Service para simulação de pagamento"]
+        end
 
-SHOW_LEGEND()
+    end
 
----
-
-### **Notas Técnicas**
-- Este diagrama mostra o padrão interno de **um microsserviço típico** da POC.  
-- Todos os serviços compartilham a mesma estrutura de componentes:
-  - **Controller → Service → Repository**, complementados por:
-    - **Adapters externos (Kafka, HTTP, Redis, Telemetry)**.
-- O uso de *Mermaid C4* permite gerar documentação automática e integrável a pipelines (`mermaid-cli`, `mkdocs` ou `plantuml`).
-
----
-
-### **Padrões aplicados neste nível**
-| Padrão | Aplicação | Benefício |
-|---------|------------|------------|
-| **Strategy** | Seleção de provedores externos (Charging/Payment) | Reduz acoplamento e facilita substituição |
-| **Chain of Responsibility** | Validações de sessão e antifraude | Extensível sem alterar código existente |
-| **Template Method** | Fluxos de recarga padronizados | Reuso e consistência |
-| **State Pattern** | Estados da sessão de recarga (iniciada, ativa, encerrada) | Controle explícito e previsível |
-
----
-
+    %% --- Relações entre componentes ---
+    A -->|Invoca regras de negócio| B
+    B -->|Persiste dados de sessão| C
+    B -.->|Publica eventos de status| D
+    E -.->|Atualiza estado com base em eventos externos| B
+    B -->|Armazena sessões temporárias| F
+    B -->|Envia métricas e logs| G
+    B -->|Valida credenciais de sessão OIDC| H
+    B -->|Confirma transação de pagamento simulada| I

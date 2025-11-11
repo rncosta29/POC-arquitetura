@@ -83,6 +83,7 @@ Cada ambiente conta com:
 
 ## 7. Fluxo de Deploy Simplificado
 
+```mermaid
 flowchart LR
     Dev[Desenvolvedor] --> Commit[Commit em Git]
     Commit --> CI[Pipeline CI/CD]
@@ -90,6 +91,7 @@ flowchart LR
     Registry --> EKS_HML[EKS - HML]
     EKS_HML -->|Validação OK| EKS_PROD[EKS - PROD]
     EKS_PROD --> Monitor[Prometheus/Grafana]
+```
 
 ---
 
